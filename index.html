@@ -113,37 +113,17 @@
     <iframe id="content-frame" allow="fullscreen"></iframe>
 
     <script>
-        // Esta é a sua URL do Notion encriptada com a senha "psiquiatria39"
-        const _0xdb = [24, 7, 29, 1, 6, 83, 78, 75, 1, 0, 15, 82, 65, 3, 26, 9, 20, 26, 71, 15, 27, 6, 0, 14, 93, 19, 3, 26, 21, 20, 74, 30, 87, 17, 0, 88, 6, 7, 74, 69, 23, 21, 25, 65, 91, 89, 19, 26, 80, 22, 86, 75, 65, 75, 30, 88, 16, 81, 19, 67, 75, 30, 4, 65, 13, 23, 75, 26, 78, 5, 31, 18, 73, 65, 85];
-
         function login() {
-            // Pega a senha ignorando espaços sem querer e letras maiúsculas
             const input = document.getElementById("password").value.trim().toLowerCase();
             const error = document.getElementById("error");
             const frame = document.getElementById("content-frame");
 
-            if (!input) {
-                error.style.display = "block";
-                return;
-            }
-
-            let result = '';
-            try {
-                // Tenta desencriptar o link usando a senha digitada
-                for (let i = 0; i < _0xdb.length; i++) {
-                    result += String.fromCharCode(_0xdb[i] ^ input.charCodeAt(i % input.length));
-                }
-
-                // Se a senha for certa, o resultado começará com "https://"
-                if (result.startsWith('https://')) {
-                    document.querySelector(".login-container").style.display = "none";
-                    frame.src = result;
-                    frame.style.display = "block";
-                    error.style.display = "none";
-                } else {
-                    error.style.display = "block";
-                }
-            } catch (e) {
+            if (input === "psiq39") {
+                document.querySelector(".login-container").style.display = "none";
+                frame.src = "YOUR_NOTION_URL_HERE";
+                frame.style.display = "block";
+                error.style.display = "none";
+            } else {
                 error.style.display = "block";
             }
         }
