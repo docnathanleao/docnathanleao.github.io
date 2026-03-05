@@ -6,13 +6,14 @@
     <title>Acesso Restrito - R1 Psiquiatria</title>
     <style>
         :root {
-            --bg-color: #0b132b;
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --card-border: rgba(255, 255, 255, 0.15);
-            --text-main: #ffffff;
-            --text-muted: #9ca3af;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
+            /* Cores sólidas de fundo e azul moderno */
+            --bg-color: #0A192F; 
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
             --error: #ef4444;
         }
 
@@ -24,7 +25,7 @@
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg-color);
+            background-color: var(--bg-color);
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -47,7 +48,7 @@
             border: 1px solid var(--card-border);
             padding: 45px 35px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             text-align: center;
             width: 100%;
             max-width: 380px;
@@ -96,14 +97,14 @@
         }
 
         input[type="password"]::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.3);
         }
 
         input[type="password"]:focus {
             outline: none;
             border-color: var(--accent);
             background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
         }
 
         button {
@@ -209,7 +210,9 @@
             };
 
             const processAccess = () => {
-                const k = inp.value;
+                // Aqui está a correção: ignora espaços digitados sem querer e letras maiúsculas
+                const k = inp.value.trim().toLowerCase();
+                
                 if (!k) {
                     triggerError();
                     return;
@@ -223,7 +226,7 @@
                         r += String.fromCharCode(_0xdb[i] ^ k.charCodeAt(i % k.length));
                     }
 
-                    if (r.indexOf('https://') === 0) {
+                    if (r.startsWith('https://')) {
                         loginWrapper.style.display = 'none';
                         iframe.src = r;
                         iframe.style.display = 'block';
