@@ -3,137 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso Restrito - Psiquiatria</title>
+    <title>Acesso Restrito - R1 Psiquiatria</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            height: 100vh;
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --card-border: rgba(255, 255, 255, 0.2);
+            --text-main: #ffffff;
+            --text-muted: #dcdcdc;
+            --accent: #4ca1af;
+            --accent-hover: #3b8d9a;
+            --error: #ff4b4b;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-gradient);
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            transition: opacity 0.5s ease;
         }
 
         .login-container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border);
+            padding: 45px 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             text-align: center;
             width: 100%;
-            max-width: 320px;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .icon-lock {
+            width: 48px;
+            height: 48px;
+            fill: var(--accent);
+            margin-bottom: 20px;
         }
 
         h2 {
-            color: #2c3e50;
-            margin-top: 0;
-            margin-bottom: 10px;
+            color: var(--text-main);
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
         }
 
         p {
-            color: #555;
+            color: var(--text-muted);
             font-size: 14px;
-            margin-bottom: 25px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            width: 100%;
+            position: relative;
         }
 
         input[type="password"] {
             width: 100%;
-            padding: 12px;
+            padding: 14px 16px;
             margin-bottom: 20px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            color: var(--text-main);
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+        }
+
+        input[type="password"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
         input[type="password"]:focus {
             outline: none;
-            border-color: #1e3c72;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(76, 161, 175, 0.3);
         }
 
         button {
-            background-color: #1e3c72;
+            background: var(--accent);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
+            padding: 14px 20px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
             width: 100%;
-            transition: background-color 0.3s;
-            font-weight: bold;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         button:hover {
-            background-color: #2a5298;
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
 
         .error-message {
-            color: #e74c3c;
+            color: var(--error);
             margin-top: 15px;
             font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s;
+            height: 20px;
+        }
+
+        .error-message.visible {
+            opacity: 1;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Container que vai segurar o Notion em tela cheia */
+        #content-frame {
             display: none;
-            font-weight: bold;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            background-color: #ffffff;
+            z-index: 9999;
         }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <h2>Área Restrita</h2>
-        <p>Insira sua credencial para acessar o material de Psiquiatria.</p>
-        
-        <input type="password" id="password" placeholder="Digite a senha" onkeypress="checkEnter(event)">
-        <button onclick="authenticate()">Acessar</button>
-        
-        <div id="error-message" class="error-message">Acesso negado. Tente novamente.</div>
+    <div class="login-wrapper" id="login-wrapper">
+        <div class="login-container">
+            <svg class="icon-lock" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 10v-4c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-3zm-10-4c0-2.206 1.794-4 4-4s4 1.794 4 4v4h-8v-4zm4 13c-1.104 0-2-.896-2-2s.896-2 2-2 2 .896 2 2-.896 2-2 2z"/>
+            </svg>
+            <h2>Olá R1</h2>
+            <p>Insira sua credencial para acessar a página</p>
+            
+            <div class="input-group" id="input-group">
+                <input type="password" id="entry-key" placeholder="Digite a credencial" autocomplete="off">
+            </div>
+            <button id="auth-btn">Acessar</button>
+            
+            <div id="error-message" class="error-message">Acesso negado.</div>
+        </div>
     </div>
 
+    <iframe id="content-frame" allow="fullscreen"></iframe>
+
     <script>
-        // Função de autenticação ofuscada
-        function authenticate() {
-            const input = document.getElementById("password").value;
-            
-            // "Assinatura" matemática da senha ofuscada (ninguém consegue ler a senha aqui)
-            const _0x1a = [117, 120, 110, 118, 122, 110, 102, 121, 119, 110, 102, 56, 62, 55, 59];
-            
-            // "Assinatura" matemática do Link do Notion ofuscado
-            const _0x2b = [109, 121, 121, 117, 120, 63, 52, 52, 120, 110, 115, 102, 117, 120, 110, 105, 106, 116, 51, 115, 116, 121, 110, 116, 115, 51, 120, 110, 121, 106, 52, 117, 120, 110, 118, 122, 110, 102, 121, 119, 110, 102, 109, 120, 123, 117];
-            
-            let isValid = input.length === _0x1a.length;
-            
-            // Verifica a chave digitada contra a assinatura matemática
-            if (isValid) {
-                for (let i = 0; i < input.length; i++) {
-                    if (input.charCodeAt(i) + 5 !== _0x1a[i]) {
-                        isValid = false;
-                        break;
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('auth-btn');
+            const inp = document.getElementById('entry-key');
+            const msg = document.getElementById('error-message');
+            const grp = document.getElementById('input-group');
+            const loginWrapper = document.getElementById('login-wrapper');
+            const iframe = document.getElementById('content-frame');
+
+            const _0xdb = [24, 7, 29, 1, 6, 83, 78, 75, 2, 8, 15, 87, 92, 93, 68, 31, 5, 4, 5, 26, 71, 15, 27, 6, 0, 14, 93, 19, 67, 95, 4, 16, 64, 1, 6, 0, 16, 1, 27, 8, 21, 65, 80, 85, 94, 3, 2];
+
+            const triggerError = () => {
+                msg.classList.add('visible');
+                grp.classList.add('shake');
+                setTimeout(() => {
+                    grp.classList.remove('shake');
+                    inp.value = '';
+                }, 400);
+            };
+
+            const processAccess = () => {
+                const k = inp.value;
+                if (!k) {
+                    triggerError();
+                    return;
+                }
+
+                msg.classList.remove('visible');
+                let r = '';
+                
+                try {
+                    for (let i = 0; i < _0xdb.length; i++) {
+                        r += String.fromCharCode(_0xdb[i] ^ k.charCodeAt(i % k.length));
                     }
-                }
-            }
 
-            if (isValid) {
-                let url = "";
-                // Desembaralha a URL apenas se a senha bater
-                for (let i = 0; i < _0x2b.length; i++) {
-                    url += String.fromCharCode(_0x2b[i] - 5);
+                    if (r.indexOf('https://') === 0) {
+                        // Ao invés de redirecionar, oculta o login e exibe o Iframe
+                        loginWrapper.style.display = 'none';
+                        iframe.src = r;
+                        iframe.style.display = 'block';
+                    } else {
+                        triggerError();
+                    }
+                } catch (e) {
+                    triggerError();
                 }
-                window.location.href = url;
-            } else {
-                const errorMessage = document.getElementById("error-message");
-                errorMessage.style.display = "block";
-                document.getElementById("password").value = "";
-            }
-        }
+            };
 
-        function checkEnter(event) {
-            if (event.key === "Enter") {
-                authenticate();
-            }
-        }
+            btn.addEventListener('click', processAccess);
+            
+            inp.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    processAccess();
+                }
+            });
+            
+            inp.addEventListener('input', () => {
+                if (msg.classList.contains('visible')) {
+                    msg.classList.remove('visible');
+                }
+            });
+
+            document.addEventListener('contextmenu', e => e.preventDefault()); 
+            document.addEventListener('keydown', e => {
+                if (e.key === 'F12' || 
+                   (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || 
+                   (e.ctrlKey && e.key === 'U')) {
+                    e.preventDefault();
+                }
+            });
+        });
     </script>
-
 </body>
 </html>
