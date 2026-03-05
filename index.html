@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso Restrito - Psiquiatria</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+
+        button {
+            background-color: #1e3c72;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #2a5298;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Área Restrita</h2>
+        <p>Insira sua credencial para acessar o material de Psiquiatria.</p>
+        
+        <input type="password" id="password" placeholder="Digite a senha" onkeypress="checkEnter(event)">
+        <button onclick="authenticate()">Acessar</button>
+        
+        <div id="error-message" class="error-message">Acesso negado. Tente novamente.</div>
+    </div>
+
+    <script>
+        // Função de autenticação ofuscada
+        function authenticate() {
+            const input = document.getElementById("password").value;
+            
+            // "Assinatura" matemática da senha ofuscada (ninguém consegue ler a senha aqui)
+            const _0x1a = [117, 120, 110, 118, 122, 110, 102, 121, 119, 110, 102, 56, 62, 55, 59];
+            
+            // "Assinatura" matemática do Link do Notion ofuscado
+            const _0x2b = [109, 121, 121, 117, 120, 63, 52, 52, 120, 110, 115, 102, 117, 120, 110, 105, 106, 116, 51, 115, 116, 121, 110, 116, 115, 51, 120, 110, 121, 106, 52, 117, 120, 110, 118, 122, 110, 102, 121, 119, 110, 102, 109, 120, 123, 117];
+            
+            let isValid = input.length === _0x1a.length;
+            
+            // Verifica a chave digitada contra a assinatura matemática
+            if (isValid) {
+                for (let i = 0; i < input.length; i++) {
+                    if (input.charCodeAt(i) + 5 !== _0x1a[i]) {
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+
+            if (isValid) {
+                let url = "";
+                // Desembaralha a URL apenas se a senha bater
+                for (let i = 0; i < _0x2b.length; i++) {
+                    url += String.fromCharCode(_0x2b[i] - 5);
+                }
+                window.location.href = url;
+            } else {
+                const errorMessage = document.getElementById("error-message");
+                errorMessage.style.display = "block";
+                document.getElementById("password").value = "";
+            }
+        }
+
+        function checkEnter(event) {
+            if (event.key === "Enter") {
+                authenticate();
+            }
+        }
+    </script>
+
+</body>
+</html>
