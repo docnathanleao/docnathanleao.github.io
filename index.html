@@ -1,143 +1,173 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Acesso Restrito - R1 Psiquiatria</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso Restrito - R1 Psiquiatria</title>
 
-<style>
-:root {
---bg-color: #0A192F;
---card-bg: rgba(255, 255, 255, 0.05);
---card-border: rgba(255, 255, 255, 0.1);
---text-main: #f8fafc;
---text-muted: #94a3b8;
---accent: #2563eb;
---accent-hover: #1d4ed8;
---error: #ef4444;
-}
+    <style>
+        :root {
+            --bg-color: #0A192F;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --error: #ef4444;
+        }
 
-* { box-sizing: border-box; margin:0; padding:0; }
+        * { box-sizing: border-box; margin:0; padding:0; }
 
-body {
-font-family: 'Segoe UI', system-ui, sans-serif;
-background-color: var(--bg-color);
-height: 100vh;
-display: flex;
-justify-content: center;
-align-items: center;
-}
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
 
-.login-container {
-background: var(--card-bg);
-backdrop-filter: blur(15px);
-border: 1px solid var(--card-border);
-padding: 40px;
-border-radius: 20px;
-width: 100%;
-max-width: 380px;
-text-align: center;
-}
+        .login-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+        }
 
-h2 { color: var(--text-main); margin-bottom: 10px; }
-p { color: var(--text-muted); margin-bottom: 25px; }
+        h2 { color: var(--text-main); margin-bottom: 10px; }
+        p { color: var(--text-muted); margin-bottom: 25px; font-size: 14px; line-height: 1.5; }
 
-input {
-width: 100%;
-padding: 12px;
-border-radius: 8px;
-border: 1px solid var(--card-border);
-background: rgba(255,255,255,0.05);
-color: white;
-margin-bottom: 15px;
-font-size: 16px;
-}
+        input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            margin-bottom: 15px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
 
-button {
-width: 100%;
-padding: 12px;
-border-radius: 8px;
-border: none;
-background: var(--accent);
-color: white;
-font-weight: 600;
-cursor: pointer;
-}
+        input:focus {
+            border-color: var(--accent);
+        }
 
-button:hover { background: var(--accent-hover); }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
 
-.error {
-color: var(--error);
-margin-top: 10px;
-display: none;
-}
+        button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-#content-frame {
-display: none;
-position: fixed;
-top: 0;
-left: 0;
-width: 100vw;
-height: 100vh;
-border: none;
-}
-</style>
+        button:hover { background: var(--accent-hover); }
+
+        .error {
+            color: var(--error);
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+        }
+
+        #content-frame {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            background-color: white;
+        }
+    </style>
 </head>
 <body>
 
-<div class="login-container">
-<h2>Área Restrita</h2>
-<p>Insira a credencial para acessar o material.</p>
-<input type="password" id="password" placeholder="Digite a senha">
-<button onclick="login()">Acessar</button>
-<div class="error" id="error">Senha incorreta.</div>
-</div>
+    <div class="login-container">
+        <h2>Área Restrita</h2>
+        <p>Insira a credencial para acessar o material.</p>
+        <input type="password" id="password" placeholder="Digite a senha" autocomplete="off">
+        <button onclick="login()">Acessar</button>
+        <div class="error" id="error">Senha incorreta.</div>
+    </div>
 
-<iframe id="content-frame"></iframe>
+    <iframe id="content-frame" allow="fullscreen"></iframe>
 
-<script>
-const HASH_CORRETO = "441bb336492ae235a9c5cc26dd1491945a9352bb418e3126edad3a859c393d80";
+    <script>
+        // Esta é a sua URL do Notion encriptada com a senha "psiquiatria39"
+        const _0xdb = [24, 7, 29, 1, 6, 83, 78, 75, 1, 0, 15, 82, 65, 3, 26, 9, 20, 26, 71, 15, 27, 6, 0, 14, 93, 19, 3, 26, 21, 20, 74, 30, 87, 17, 0, 88, 6, 7, 74, 69, 23, 21, 25, 65, 91, 89, 19, 26, 80, 22, 86, 75, 65, 75, 30, 88, 16, 81, 19, 67, 75, 30, 4, 65, 13, 23, 75, 26, 78, 5, 31, 18, 73, 65, 85];
 
-const URL_PROTEGIDA = "https://sinapsideo.notion.site/w6er5g4s5dth468gh9wer78w9e8r79wer4g8s?pvs=74";
+        function login() {
+            // Pega a senha ignorando espaços sem querer e letras maiúsculas
+            const input = document.getElementById("password").value.trim().toLowerCase();
+            const error = document.getElementById("error");
+            const frame = document.getElementById("content-frame");
 
-async function sha256(text) {
-const encoder = new TextEncoder();
-const data = encoder.encode(text);
-const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-const hashArray = Array.from(new Uint8Array(hashBuffer));
-return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
+            if (!input) {
+                error.style.display = "block";
+                return;
+            }
 
-function constantTimeCompare(a, b) {
-if (a.length !== b.length) return false;
-let result = 0;
-for (let i = 0; i < a.length; i++) {
-result |= a.charCodeAt(i) ^ b.charCodeAt(i);
-}
-return result === 0;
-}
+            let result = '';
+            try {
+                // Tenta desencriptar o link usando a senha digitada
+                for (let i = 0; i < _0xdb.length; i++) {
+                    result += String.fromCharCode(_0xdb[i] ^ input.charCodeAt(i % input.length));
+                }
 
-async function login() {
-const input = document.getElementById("password").value.trim().toLowerCase();
-const error = document.getElementById("error");
-const frame = document.getElementById("content-frame");
+                // Se a senha for certa, o resultado começará com "https://"
+                if (result.startsWith('https://')) {
+                    document.querySelector(".login-container").style.display = "none";
+                    frame.src = result;
+                    frame.style.display = "block";
+                    error.style.display = "none";
+                } else {
+                    error.style.display = "block";
+                }
+            } catch (e) {
+                error.style.display = "block";
+            }
+        }
 
-if (!input) {
-error.style.display = "block";
-return;
-}
+        // Fazer a tecla "Enter" funcionar
+        document.getElementById("password").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                login();
+            }
+        });
 
-const hash = await sha256(input);
+        // Limpar a mensagem de erro quando o usuário começar a digitar de novo
+        document.getElementById("password").addEventListener("input", function() {
+            document.getElementById("error").style.display = "none";
+        });
 
-if (constantTimeCompare(hash, HASH_CORRETO)) {
-document.querySelector(".login-container").style.display = "none";
-frame.src = URL_PROTEGIDA;
-frame.style.display = "block";
-} else {
-error.style.display = "block";
-}
-}
-</script>
+        // Medidas para evitar que curiosos inspecionem a tela e achem o iframe
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+            }
+        });
+    </script>
 
 </body>
 </html>
