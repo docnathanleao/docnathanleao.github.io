@@ -6,14 +6,14 @@
     <title>Acesso Restrito - R1 Psiquiatria</title>
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            --card-bg: rgba(255, 255, 255, 0.1);
-            --card-border: rgba(255, 255, 255, 0.2);
+            --bg-color: #0b132b;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.15);
             --text-main: #ffffff;
-            --text-muted: #dcdcdc;
-            --accent: #4ca1af;
-            --accent-hover: #3b8d9a;
-            --error: #ff4b4b;
+            --text-muted: #9ca3af;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --error: #ef4444;
         }
 
         * {
@@ -24,7 +24,7 @@
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg-gradient);
+            background: var(--bg-color);
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -47,7 +47,7 @@
             border: 1px solid var(--card-border);
             padding: 45px 35px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             text-align: center;
             width: 100%;
             max-width: 380px;
@@ -96,14 +96,14 @@
         }
 
         input[type="password"]::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.4);
         }
 
         input[type="password"]:focus {
             outline: none;
             border-color: var(--accent);
             background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 10px rgba(76, 161, 175, 0.3);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
         }
 
         button {
@@ -123,7 +123,7 @@
         button:hover {
             background: var(--accent-hover);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         button:active {
@@ -154,7 +154,6 @@
             animation: shake 0.4s ease-in-out;
         }
 
-        /* Container que vai segurar o Notion em tela cheia */
         #content-frame {
             display: none;
             position: fixed;
@@ -175,8 +174,8 @@
             <svg class="icon-lock" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18 10v-4c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-3zm-10-4c0-2.206 1.794-4 4-4s4 1.794 4 4v4h-8v-4zm4 13c-1.104 0-2-.896-2-2s.896-2 2-2 2 .896 2 2-.896 2-2 2z"/>
             </svg>
-            <h2>Olá R1</h2>
-            <p>Insira sua credencial para acessar a página</p>
+            <h2>Área Restrita</h2>
+            <p>Insira sua credencial para acessar o material exclusivo de Psiquiatria.</p>
             
             <div class="input-group" id="input-group">
                 <input type="password" id="entry-key" placeholder="Digite a credencial" autocomplete="off">
@@ -198,7 +197,7 @@
             const loginWrapper = document.getElementById('login-wrapper');
             const iframe = document.getElementById('content-frame');
 
-            const _0xdb = [24, 7, 29, 1, 6, 83, 78, 75, 2, 8, 15, 87, 92, 93, 68, 31, 5, 4, 5, 26, 71, 15, 27, 6, 0, 14, 93, 19, 67, 95, 4, 16, 64, 1, 6, 0, 16, 1, 27, 8, 21, 65, 80, 85, 94, 3, 2];
+            const _0xdb = [24, 7, 29, 1, 6, 83, 78, 75, 1, 0, 15, 82, 65, 3, 26, 9, 20, 26, 71, 15, 27, 6, 0, 14, 93, 19, 3, 26, 21, 20, 74, 25, 18, 29, 3, 24, 8, 82, 77, 2, 26, 8, 25, 6, 31, 17];
 
             const triggerError = () => {
                 msg.classList.add('visible');
@@ -225,7 +224,6 @@
                     }
 
                     if (r.indexOf('https://') === 0) {
-                        // Ao invés de redirecionar, oculta o login e exibe o Iframe
                         loginWrapper.style.display = 'none';
                         iframe.src = r;
                         iframe.style.display = 'block';
@@ -251,7 +249,7 @@
                 }
             });
 
-            document.addEventListener('contextmenu', e => e.preventDefault()); 
+            document.addEventListener('contextmenu', e => e.preventDefault());
             document.addEventListener('keydown', e => {
                 if (e.key === 'F12' || 
                    (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || 
