@@ -189,78 +189,38 @@
 
     <iframe id="content-frame" allow="fullscreen"></iframe>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const btn = document.getElementById('auth-btn');
-            const inp = document.getElementById('entry-key');
-            const msg = document.getElementById('error-message');
-            const grp = document.getElementById('input-group');
-            const loginWrapper = document.getElementById('login-wrapper');
-            const iframe = document.getElementById('content-frame');
+<script>
+(async () => {
+const salt = new TextEncoder().encode("R1Psiquiatria2026");
+const iterations = 100000;
 
-            const _0xdb = [24, 7, 29, 1, 6, 83, 78, 75, 1, 0, 15, 82, 65, 3, 26, 9, 20, 26, 71, 15, 27, 6, 0, 14, 93, 19, 3, 26, 21, 20, 74, 25, 18, 29, 3, 24, 8, 82, 77, 2, 26, 8, 25, 6, 31, 17];
+async function deriveKey(password){
+const keyMaterial = await crypto.subtle.importKey(
+"raw",
+new TextEncoder().encode(password),
+{name:"PBKDF2"},
+false,
+["deriveBits"]
+);
 
-            const triggerError = () => {
-                msg.classList.add('visible');
-                grp.classList.add('shake');
-                setTimeout(() => {
-                    grp.classList.remove('shake');
-                    inp.value = '';
-                }, 400);
-            };
+const derivedBits = await crypto.subtle.deriveBits(
+{
+name:"PBKDF2",
+salt:salt,
+iterations:iterations,
+hash:"SHA-256"
+},
+keyMaterial,
+128
+);
 
-            const processAccess = () => {
-                // Aqui está a correção: ignora espaços digitados sem querer e letras maiúsculas
-                const k = inp.value.trim().toLowerCase();
-                
-                if (!k) {
-                    triggerError();
-                    return;
-                }
+const bytes = new Uint8Array(derivedBits);
+return Array.from(bytes).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
 
-                msg.classList.remove('visible');
-                let r = '';
-                
-                try {
-                    for (let i = 0; i < _0xdb.length; i++) {
-                        r += String.fromCharCode(_0xdb[i] ^ k.charCodeAt(i % k.length));
-                    }
-
-                    if (r.startsWith('https://')) {
-                        loginWrapper.style.display = 'none';
-                        iframe.src = r;
-                        iframe.style.display = 'block';
-                    } else {
-                        triggerError();
-                    }
-                } catch (e) {
-                    triggerError();
-                }
-            };
-
-            btn.addEventListener('click', processAccess);
-            
-            inp.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    processAccess();
-                }
-            });
-            
-            inp.addEventListener('input', () => {
-                if (msg.classList.contains('visible')) {
-                    msg.classList.remove('visible');
-                }
-            });
-
-            document.addEventListener('contextmenu', e => e.preventDefault());
-            document.addEventListener('keydown', e => {
-                if (e.key === 'F12' || 
-                   (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || 
-                   (e.ctrlKey && e.key === 'U')) {
-                    e.preventDefault();
-                }
-            });
-        });
-    </script>
+const result = await deriveKey("psiq39");
+document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:40vh'>" + result + "</h1>";
+})();
+</script>
 </body>
 </html>
