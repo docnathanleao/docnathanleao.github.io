@@ -1,226 +1,143 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso Restrito - R1 Psiquiatria</title>
-    <style>
-        :root {
-            /* Cores sólidas de fundo e azul moderno */
-            --bg-color: #0A192F; 
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --error: #ef4444;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acesso Restrito - R1 Psiquiatria</title>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<style>
+:root {
+--bg-color: #0A192F;
+--card-bg: rgba(255, 255, 255, 0.05);
+--card-border: rgba(255, 255, 255, 0.1);
+--text-main: #f8fafc;
+--text-muted: #94a3b8;
+--accent: #2563eb;
+--accent-hover: #1d4ed8;
+--error: #ef4444;
+}
 
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+* { box-sizing: border-box; margin:0; padding:0; }
 
-        .login-wrapper {
-            width: 100%;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            transition: opacity 0.5s ease;
-        }
+body {
+font-family: 'Segoe UI', system-ui, sans-serif;
+background-color: var(--bg-color);
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+}
 
-        .login-container {
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--card-border);
-            padding: 45px 35px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            width: 100%;
-            max-width: 380px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+.login-container {
+background: var(--card-bg);
+backdrop-filter: blur(15px);
+border: 1px solid var(--card-border);
+padding: 40px;
+border-radius: 20px;
+width: 100%;
+max-width: 380px;
+text-align: center;
+}
 
-        .icon-lock {
-            width: 48px;
-            height: 48px;
-            fill: var(--accent);
-            margin-bottom: 20px;
-        }
+h2 { color: var(--text-main); margin-bottom: 10px; }
+p { color: var(--text-muted); margin-bottom: 25px; }
 
-        h2 {
-            color: var(--text-main);
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
+input {
+width: 100%;
+padding: 12px;
+border-radius: 8px;
+border: 1px solid var(--card-border);
+background: rgba(255,255,255,0.05);
+color: white;
+margin-bottom: 15px;
+font-size: 16px;
+}
 
-        p {
-            color: var(--text-muted);
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 30px;
-        }
+button {
+width: 100%;
+padding: 12px;
+border-radius: 8px;
+border: none;
+background: var(--accent);
+color: white;
+font-weight: 600;
+cursor: pointer;
+}
 
-        .input-group {
-            width: 100%;
-            position: relative;
-        }
+button:hover { background: var(--accent-hover); }
 
-        input[type="password"] {
-            width: 100%;
-            padding: 14px 16px;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
-            color: var(--text-main);
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
+.error {
+color: var(--error);
+margin-top: 10px;
+display: none;
+}
 
-        input[type="password"]::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        input[type="password"]:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
-        }
-
-        button {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        button:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        .error-message {
-            color: var(--error);
-            margin-top: 15px;
-            font-size: 14px;
-            font-weight: 500;
-            opacity: 0;
-            transition: opacity 0.3s;
-            height: 20px;
-        }
-
-        .error-message.visible {
-            opacity: 1;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
-        }
-
-        .shake {
-            animation: shake 0.4s ease-in-out;
-        }
-
-        #content-frame {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            border: none;
-            background-color: #ffffff;
-            z-index: 9999;
-        }
-    </style>
+#content-frame {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+border: none;
+}
+</style>
 </head>
 <body>
 
-    <div class="login-wrapper" id="login-wrapper">
-        <div class="login-container">
-            <svg class="icon-lock" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 10v-4c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-3zm-10-4c0-2.206 1.794-4 4-4s4 1.794 4 4v4h-8v-4zm4 13c-1.104 0-2-.896-2-2s.896-2 2-2 2 .896 2 2-.896 2-2 2z"/>
-            </svg>
-            <h2>Área Restrita</h2>
-            <p>Insira sua credencial para acessar o material exclusivo de Psiquiatria.</p>
-            
-            <div class="input-group" id="input-group">
-                <input type="password" id="entry-key" placeholder="Digite a credencial" autocomplete="off">
-            </div>
-            <button id="auth-btn">Acessar</button>
-            
-            <div id="error-message" class="error-message">Acesso negado.</div>
-        </div>
-    </div>
+<div class="login-container">
+<h2>Área Restrita</h2>
+<p>Insira a credencial para acessar o material.</p>
+<input type="password" id="password" placeholder="Digite a senha">
+<button onclick="login()">Acessar</button>
+<div class="error" id="error">Senha incorreta.</div>
+</div>
 
-    <iframe id="content-frame" allow="fullscreen"></iframe>
+<iframe id="content-frame"></iframe>
 
 <script>
-(async () => {
-const salt = new TextEncoder().encode("R1Psiquiatria2026");
-const iterations = 100000;
+const HASH_CORRETO = "441bb336492ae235a9c5cc26dd1491945a9352bb418e3126edad3a859c393d80";
 
-async function deriveKey(password){
-const keyMaterial = await crypto.subtle.importKey(
-"raw",
-new TextEncoder().encode(password),
-{name:"PBKDF2"},
-false,
-["deriveBits"]
-);
+const URL_PROTEGIDA = "https://sinapsideo.notion.site/w6er5g4s5dth468gh9wer78w9e8r79wer4g8s?pvs=74";
 
-const derivedBits = await crypto.subtle.deriveBits(
-{
-name:"PBKDF2",
-salt:salt,
-iterations:iterations,
-hash:"SHA-256"
-},
-keyMaterial,
-128
-);
-
-const bytes = new Uint8Array(derivedBits);
-return Array.from(bytes).map(b=>b.toString(16).padStart(2,"0")).join("");
+async function sha256(text) {
+const encoder = new TextEncoder();
+const data = encoder.encode(text);
+const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+const hashArray = Array.from(new Uint8Array(hashBuffer));
+return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-const result = await deriveKey("psiq39");
-document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:40vh'>" + result + "</h1>";
-})();
+function constantTimeCompare(a, b) {
+if (a.length !== b.length) return false;
+let result = 0;
+for (let i = 0; i < a.length; i++) {
+result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+}
+return result === 0;
+}
+
+async function login() {
+const input = document.getElementById("password").value.trim().toLowerCase();
+const error = document.getElementById("error");
+const frame = document.getElementById("content-frame");
+
+if (!input) {
+error.style.display = "block";
+return;
+}
+
+const hash = await sha256(input);
+
+if (constantTimeCompare(hash, HASH_CORRETO)) {
+document.querySelector(".login-container").style.display = "none";
+frame.src = URL_PROTEGIDA;
+frame.style.display = "block";
+} else {
+error.style.display = "block";
+}
+}
 </script>
+
 </body>
 </html>
